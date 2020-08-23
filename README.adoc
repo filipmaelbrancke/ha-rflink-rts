@@ -196,7 +196,48 @@ shutter 4
 ```
 
 
+== Home Assistant
 
+Home Assistant has an https://www.home-assistant.io/integrations/rflink/[rflink integration] to support the RFLink gateway.
+
+=== configuration
+
+Enable rflink in Home Assistant by adding the `rflink` section to `configuration.yaml`
+
+```
+# Example configuration.yaml entry
+rflink:
+  port: /dev/ttyACM1
+  or
+  port: /dev/serial/by-id/usb-xxxxxxxxx
+```
+
+==== Debug Logging
+
+For debugging purposes & investigating the context, enable the debug logging for RFLink
+
+```
+logger:
+  default: error
+  logs:
+    rflink: debug
+    homeassistant.components.rflink: debug
+```
+
+Add the necessary covers to `configuration.yaml`:
+
+Associate a shutter with the previously configured addresses in RFLink.
+The RFLink cover ID's are composed of: protocol (RTS), address id & gateway id. For example: `RTS_0A0A0A_0`
+
+```
+# Add Somfy RTS covers
+cover:
+  - platform: rflink
+    devices:
+      RTS_0A0A0A_0:
+        name: Shutter Office Room
+      ...
+```
 
 = Resources
 
