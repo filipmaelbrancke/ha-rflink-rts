@@ -19,15 +19,6 @@ Somfy RTS, RFLink and Home Assistant
 
 Shutters automation.
 
-ifdef::env-github[]
-++++
-<img align="right" role="right" height="200" width="200" src="images/rflink.png?raw=true"/>
-++++
-endif::[]
-ifndef::env-github[]
-image::rflink.png[RFLink,200,200,float="right"]
-endif::[]
-
 (Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy blind-motors should be tied into a https://www.home-assistant.io/[Home Assistant] setup.
 Somfy blinds can be controlled via RF transmission on 433.42 MHz, so how hard can it be?
 
@@ -64,6 +55,15 @@ image::somfy-telis-4-rts-pcb-annotated.png[Somfy Telis 4 connections, 650]
 
 == RFLink
 
+
+ifdef::env-github[]
+++++
+<img align="right" role="right" height="200" width="200" src="images/rflink.png?raw=true"/>
+++++
+endif::[]
+ifndef::env-github[]
+image::rflink.png[RFLink,200,200,float="right"]
+endif::[]
 
 Controlling the Telis pcb using some relays under control of Home Assistant worked, but a more robust and scalable solution would be to use a microcontroller with a 433MHz transmitter/receiver and have that act as a remote.
 More information about the Somfy RTS protocol can be found at https://pushstack.wordpress.com/somfy-rts-protocol/
