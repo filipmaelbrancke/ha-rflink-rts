@@ -34,7 +34,7 @@ Somfy blinds can be controlled via RF transmission on 433.42 MHz, so how hard ca
 
 ifdef::env-github[]
 ++++
-<img align="right" role="right" height="200" width="200" src="images/rflink.png?raw=true"/>
+<img align="right" role="right" height="200" width="200" src="images/somfy-dry-contact-to-rts-inside.gif?raw=true"/>
 ++++
 endif::[]
 ifndef::env-github[]
