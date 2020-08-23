@@ -195,33 +195,24 @@ shutter 4
 10;RTS;0D0D0D;0456;4;PAIR;
 ```
 
+4 shutter configurations are programmed into the RFLink, and the 4 corresponding rolling codes are now under control of the RFLink gateway:
+
+image::rflink-pair-4-covers-added.png[RTSSHOW, 650]
 
 == Home Assistant
 
-Home Assistant has an https://www.home-assistant.io/integrations/rflink/[rflink integration] to support the RFLink gateway.
+Home Assistant has an https://www.home-assistant.io/integrations/rflink/[rflink integration] to support the RFLink gateway and support for https://www.home-assistant.io/integrations/cover.rflink/[RFLink-controlled shutters].
 
 === configuration
 
 Enable rflink in Home Assistant by adding the `rflink` section to `configuration.yaml`
 
 ```
-# Example configuration.yaml entry
+# Enable RFLink integration in Home Assistant
 rflink:
   port: /dev/ttyACM1
   or
   port: /dev/serial/by-id/usb-xxxxxxxxx
-```
-
-==== Debug Logging
-
-For debugging purposes & investigating the context, enable the debug logging for RFLink
-
-```
-logger:
-  default: error
-  logs:
-    rflink: debug
-    homeassistant.components.rflink: debug
 ```
 
 Add the necessary covers to `configuration.yaml`:
@@ -237,6 +228,18 @@ cover:
       RTS_0A0A0A_0:
         name: Shutter Office Room
       ...
+```
+
+==== debug logging
+
+For debugging purposes & investigating the context, enabling the debug logging for RFLink can be handy
+
+```
+logger:
+  default: error
+  logs:
+    rflink: debug
+    homeassistant.components.rflink: debug
 ```
 
 = Resources
