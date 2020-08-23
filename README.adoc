@@ -31,6 +31,7 @@ endif::[]
 (Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy blind-motors should be tied into a https://www.home-assistant.io/[Home Assistant] setup.
 Somfy blinds can be controlled via RF transmission on 433.42 MHz, so how hard can it be?
 
+==== Somfy pcb
 
 ifdef::env-github[]
 ++++
