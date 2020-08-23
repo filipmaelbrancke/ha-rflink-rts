@@ -28,13 +28,20 @@ ifndef::env-github[]
 image::rflink.png[RFLink,200,200,float="right"]
 endif::[]
 
-(Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy blind-motors should be tied into a Home Assistant setup.
+(Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy blind-motors should be tied into a https://www.home-assistant.io/[Home Assistant] setup.
 Somfy blinds can be controlled via RF transmission on 433.42 MHz, so how hard can it be?
 
 
-
+ifdef::env-github[]
+++++
+<img align="right" role="right" height="200" width="200" src="images/rflink.png?raw=true"/>
+++++
+endif::[]
+ifndef::env-github[]
 .Inside the Somfy RTS Dry Contact Interface
 image::somfy-dry-contact-to-rts-inside.gif[Dry Contact Interface, 250, 250,float="right"]
+endif::[]
+
 
 My first solution for controlling a few Somfy RTS blinds was just using the pcb from a https://www.somfy.be/nl-be/producten/1810631/telis-4-rts[Somfy Telis 4 remote control], and connect some relays to it.
 Basically, same principle as can be bought as a https://www.somfysystems.com/en-us/products/1810493/rts-dry-contact-interface[Somfy RTS Dry Contact Interface]
@@ -54,10 +61,10 @@ image::somfy-telis-4-rts-pcb-annotated.png[Somfy Telis 4 connections, 650]
 
 
 
+== RFLink
 
 
-
-A more robust and scalable solution would be to use a microcontroller with a 433MHz transmitter/receiver and have that act as a remote.
+Controlling the Telis pcb using some relays under control of Home Assistant worked, but a more robust and scalable solution would be to use a microcontroller with a 433MHz transmitter/receiver and have that act as a remote.
 More information about the Somfy RTS protocol can be found at https://pushstack.wordpress.com/somfy-rts-protocol/
 Luckily, an excellent RF Gateway exists with the http://www.rflink.nl[RFLink], and that can serve as a quick way to integrate a 433MHz sender/receiver. Even better, the RFLink people have http://www.rflink.nl/blog2/faq#RTS[integrated the Somfy RTS protocol into their firmware].
 
@@ -76,6 +83,16 @@ image::rflink-flash-firmware.png[RFLink, 650]
 
 - Connect to RFLink & turn on Serial Port Logging
 
+RFLink should output some feedback like
+
+```
+20;00;Nodo RadioFrequencyLink - RFLink Gateway V1.1 - R48;
+10;version;
+20;01;VER=1.1;REV=48;BUILD=04;
+10;status;
+20;02;STATUS;setRF433=ON;setNodoNRF=OFF;setMilight=OFF;setLivingColors=OFF;setAnsluta=OFF;setGPIO=OFF;setBLE=OFF;setMysensors=OFF;
+```
+
 - Check the current slots for storage of rolling codes in the RFLink's internal EEPROM
 
 ```
@@ -84,22 +101,89 @@ image::rflink-flash-firmware.png[RFLink, 650]
 
 which for an empty rolling codes table would look like:
 
-```
+image::rflink-rtsshow.png[RTSSHOW, 650]
 
-```
 
+- Put RTS shutters into pairing mode
+
+See https://www.somfysystems.com/en-us/Blog/Post/2019-03-04-how-to-add-or-remove-additional-rts-controls-for-your-rolling-shutter[Somfy documentation], with an already programmed RTS transmitter, it's just a case of pushing the programming button on the back of the remote control for a few seconds until the shutter jogs.
 
 - Pair Somfy shutter with the RFLink
 
-Send pairing command : 10;RTS;0A0A0A;0123;1;PAIR;
+Send pairing command : `10;RTS;0A0A0A;0123;1;PAIR;`
 
-10 : send command to RFlink
-RTS : RTS protocol
-0A0A0A : address
-0123 : rolling code number
-3 : position in the rolling code table stored in internal EEPROM. (hexadecimal)
-PAIR : RFLink RTS pair command
+[cols=2*]
+|===
+2+^| http://rflink.nl/blog2/protref[Pairing command breakdown]
 
+|10
+|send command to RFlink
+
+|RTS
+|RTS protocol
+
+|0A0A0A
+|address (needs to be a unique remote control code - hexadecimal)
+
+|0123
+|rolling code number
+
+|1
+|position in the rolling code table stored in internal EEPROM. (hexadecimal)
+
+|PAIR
+|RFLink RTS pair command
+
+|===
+
+image::rflink-pair.png[Pair, 650]
+
+- Verify the pairing by checking the internal EEPROM slots (using `RTSSHOW` command)
+
+image::rflink-pair-rtsshow.png[Pair, 650]
+
+- At this point, it should be possible to control the shutter using the RFLink
+
+Moving shutter down:
+```
+10;RTS;0A0A0A;0;DOWN;
+```
+
+[cols=2*]
+|===
+2+^| RFLink protocol
+
+|10
+|send command to RFlink
+
+|RTS
+|RTS protocol
+
+|0A0A0A
+|address
+
+|0
+|(zero = currently unused parameter)
+
+|DOWN
+|command
+
+|===
+
+
+Moving shutter up:
+```
+10;RTS;0A0A0A;0;UP;
+```
+
+Stop shutter movement:
+```
+10;RTS;0A0A0A;0;STOP;
+```
+
+
+For my 4 shutters, pairing all 4 of them:
+```
 shutter 1 (left to right)
 10;RTS;0A0A0A;0123;1;PAIR;
 shutter 2
@@ -108,20 +192,16 @@ shutter 3
 10;RTS;0C0C0C;0345;3;PAIR;
 shutter 4
 10;RTS;0D0D0D;0456;4;PAIR;
+```
 
 
-10;RTS;0A0A0A;0;DOWN;
-
-RTS protocol
-address
-(zero is currently unused)
-command
-
-10;RTS;0A0A0A;0;UP;
-
-10;RTS;0A0A0A;0;STOP;
 
 
 = Resources
 
+https://www.home-assistant.io/integrations/rflink/
+https://www.home-assistant.io/integrations/cover.rflink/
 https://github.com/Nickduino/Pi-Somfy
+https://www.letscontrolit.com/forum/viewtopic.php?t=3399
+https://matdomotique.wordpress.com/2016/04/21/domoticz-rflink-et-somfy/
+http://rflink.nl/blog2/
