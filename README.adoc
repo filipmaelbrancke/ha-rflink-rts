@@ -19,8 +19,8 @@ Somfy RTS, RFLink and Home Assistant
 
 Shutters automation.
 
-(Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy blind-motors should be tied into a https://www.home-assistant.io/[Home Assistant] setup.
-Somfy blinds can be controlled via RF transmission on 433.42 MHz, so how hard can it be?
+(Unfortunately) we have some https://www.somfysystems.com/en-us/discover-somfy/power-technology/radio-technology-somfy[Somfy RTS] shutters in the house, and I wanted these shutters tied into the automation system together with all the other, non-Somfy-RTS shutters that are automated, and to eliminate using the Somfy remote controls. I'm not interested in buying a Somfy home automation system. The Somfy shutter-motors should be tied into a https://www.home-assistant.io/[Home Assistant] setup.
+Somfy RTS shutters can be controlled via RF transmission on 433.42 MHz, so how hard can it be?
 
 ==== Somfy pcb
 
@@ -118,7 +118,7 @@ Send pairing command : `10;RTS;0A0A0A;0123;1;PAIR;`
 2+^| http://rflink.nl/blog2/protref[Pairing command breakdown]
 
 |10
-|send command to RFlink
+|indication for RFlink that a command is send to interpret
 
 |RTS
 |RTS protocol
@@ -250,3 +250,7 @@ https://github.com/Nickduino/Pi-Somfy
 https://www.letscontrolit.com/forum/viewtopic.php?t=3399
 https://matdomotique.wordpress.com/2016/04/21/domoticz-rflink-et-somfy/
 http://rflink.nl/blog2/
+https://www.instructables.com/id/How-to-Connect-Your-Somfy-Remote-to-Alexa-With-an-/
+https://bithead942.wordpress.com/2014/04/12/motorized-window-blinds-phase-2/
+https://romor.github.io/blind-control/
+https://www.smbaker.com/automated-cellular-shades-with-somfy
