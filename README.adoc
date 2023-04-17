@@ -35,7 +35,7 @@ image::somfy-dry-contact-to-rts-inside.gif[Dry Contact Interface, 250, 250,float
 endif::[]
 
 
-My first solution for controlling a few Somfy RTS blinds was just using the pcb from a https://www.somfy.co.uk/downloads/uk/5054465x00_telis4_rts_en_low_final.pdf[Somfy Telis 4 remote control], and connect some relays to it.
+My first solution for controlling a few Somfy RTS blinds was just using the pcb from a https://store.somfysystems.com/products/remotes/somfy-telis-4.html[Somfy Telis 4 remote control], and connect some relays to it.
 Basically, same principle as can be bought as a https://www.somfysystems.com/en-us/products/1810493/rts-dry-contact-interface[Somfy RTS Dry Contact Interface]
 
 .Somfy Telis 4 donor
@@ -115,7 +115,7 @@ Send pairing command : `10;RTS;0A0A0A;0123;1;PAIR;`
 
 [cols=2*]
 |===
-2+^| http://rflink.nl/blog2/protref[Pairing command breakdown]
+2+^| https://www.rflink.nl/protref.php[Pairing command breakdown]
 
 |10
 |indication for RFlink that a command is send to interpret
